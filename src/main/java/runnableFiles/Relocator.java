@@ -51,9 +51,9 @@ public class Relocator {
 	private static Double horizonTime = 300.0; // 5 min
 	private static int numberOfDesiredTopZones = 3;
 	/////////////////////////////////////////////////////
-	private static boolean noRelocation = true;
+	private static boolean noRelocation = false;
 	////////////////////////////////////////////////////
-	private static boolean demand = false;
+	private static boolean demand = true;
 	private static boolean supply = false;
 	private static boolean demandSupply = false;
 	private static boolean zonal = false;
