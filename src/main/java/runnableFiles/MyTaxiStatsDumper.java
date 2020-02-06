@@ -124,34 +124,6 @@ public class MyTaxiStatsDumper implements AfterMobsimListener, ShutdownListener 
 		multiDayWriter.flush();
 	}
 
-	private void writeDetailedStats2(List<MyTaxiParkingStats> taxiParkingStats, AfterMobsimEvent event,MyZonalSystem myZonalSystem, MyTaxiParkingStats myTaxiParkingStats, List<TaxiStats> taxiStats) {
-		String prefix = controlerIO.getIterationFilename(event.getIteration(), "taxi_");
-		new Writer_TaxiParkingZonalUseStats(taxiParkingStats, myZonalSystem).write(prefix + "detatiledZonalParkingUseStats.txt");
-		new Writer_TaxiParkingZonalWaitingTimeStats(taxiParkingStats, myZonalSystem).write(prefix + "detatiledZonalWaitingTimeStats.txt");
-		new Writer_TaxiParkingCompleteWaitingTimes(taxiParkingStats).write(prefix + "rawPassengerWaitingTimes.txt");
-		new Writer_TaxiParkingZonalDurationStats(taxiParkingStats, myZonalSystem).write(prefix + "detatiledZonalParkingDurationStats.txt");
-		new Writer_TaxiParkingZonalAll(taxiParkingStats, myZonalSystem, myTaxiParkingStats).write(prefix + "taxiZonalOutputToExcel.txt");
-		new Writer_TaxiParkingStats(taxiParkingStats, myTaxiParkingStats, taxiStats ).write(prefix + "taxiOutputToExcel.txt");
-		//new Writer_TaxiParkingRelocations().write(prefix + "rawTaxiRelocations.txt");
-		//new Writer_TaxiParkingCompleteParkingTimes(taxiParkingStats).write(prefix + "taxiParkingTimes.txt");
-		//new TaxiParkingCompleteCounterWriter(taxiParkingStats, myZonalSystem).write(prefix + "taxiParkingCounterPerZone(RAW).txt");
-		//new TaxiParkingZonalCounterRawDataWriter(taxiParkingStats, myZonalSystem).write(prefix + "zonalParkingUseRawData.txt");
-		
-		// for debuggging only
-		try (CompactCSVWriter writer = new CompactCSVWriter(IOUtils.getBufferedWriter(prefix + "DEBUGGINGstartLinks.txt"))) {
-			writer.writeNext("vehicle", "StartLink", "FirstStayTaskLink");
-			for (Entry<Id<Vehicle>, ? extends Vehicle> entry : fleet.getVehicles().entrySet()) {
-				Vehicle veh= entry.getValue();						
-				TaxiStayTask stayTask = (TaxiStayTask) veh.getSchedule().getTasks().get(0);
-				CSVLineBuilder lineBuilder = new CSVLineBuilder()
-						.add(veh.getId().toString())
-						.add(veh.getStartLink().getId().toString())
-						.add(stayTask.getLink().getId().toString() + "");
-				writer.writeNext(lineBuilder);
-			}
-		}		
-	}
-
 	@Override
 	public void notifyShutdown(ShutdownEvent event) {
 		multiDayWriter.close();
